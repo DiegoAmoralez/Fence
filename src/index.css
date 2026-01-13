@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply antialiased text-gray-900 bg-gray-50;
+  }
+}
+
+/* Premium Mobile Styles */
+.mobile-container {
+  @apply w-full mx-auto bg-white min-h-screen relative overflow-x-hidden;
+  /* On Tablet/Desktop, resemble a responsive app or keep centered max-width if desired. 
+     User asked for tablet view, so let's allow it to grow. */
+}
+
+@media (min-width: 768px) {
+  .mobile-container {
+    @apply max-w-2xl shadow-2xl my-4 min-h-[calc(100vh-2rem)] rounded-3xl border border-gray-200;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-container {
+    @apply max-w-4xl;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
