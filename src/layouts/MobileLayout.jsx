@@ -44,7 +44,7 @@ const MobileLayout = () => {
                 <button onClick={() => setIsDrawerOpen(true)} className="p-1 hover:bg-blue-700 rounded-md">
                     <Menu size={28} />
                 </button>
-                <h1 className="text-lg font-bold truncate mx-2">Fence Force</h1>
+                <h1 className="text-lg font-bold truncate mx-2">American Fence Co.</h1>
                 <div className="w-8">
                     {/* Placeholder for future icon or status */}
                     <div className={clsx("w-3 h-3 rounded-full", isOffline ? "bg-yellow-400" : "bg-green-400")} onClick={toggleOffline} />

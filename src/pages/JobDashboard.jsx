@@ -22,14 +22,23 @@ const JobDashboard = () => {
 
     useEffect(() => {
         const loadJob = async () => {
-            // Always fetch latest from service to ensure we aren't showing stale context data
-            const job = await mockService.getJob(jobId);
-            setCurrentJob(job);
-            if (job) setStatus(job.status || 'in-progress');
+            // Always fetch latest to ensure sync, even if we have context (context might be stale from other tab/nav)
+            // But for now, if we have currentJob and it matches ID, trust it?
+            // Better: If we have currentJob, use it, but maybe background refresh?
+            // Users issue: "White Screen".
+            // The replace above fixes the spread crash.
+            // Let's also ensure setStatus handles missing status gracefully.
+            if (!currentJob || currentJob.id !== jobId) {
+                const job = await mockService.getJob(jobId);
+                setCurrentJob(job);
+                if (job) setStatus(job.status || 'in-progress');
+            } else {
+                setStatus(currentJob.status || 'in-progress');
+            }
             setTimeout(() => setLoading(false), 600);
         };
         loadJob();
-    }, [jobId, setCurrentJob]);
+    }, [jobId, currentJob, setCurrentJob]);
 
     const handleOpenModal = (type) => {
         setModalOpen(type);
@@ -63,15 +72,10 @@ const JobDashboard = () => {
     };
 
     const handleResume = async () => {
-        try {
-            // Use returned job to ensure history and status are in sync
-            const updated = await mockService.updateJobStatus(jobId, 'in-progress', 'Resumed work');
-            if (updated) {
-                setCurrentJob(updated);
-                setStatus('in-progress');
-            }
-        } catch (error) {
-            console.error("Resume failed:", error);
+        // Use returned job to ensure history and status are in sync
+        const updated = await mockService.updateJobStatus(jobId, 'in-progress', 'Resumed work');
+        if (updated) {
+            setCurrentJob(updated);
             setStatus('in-progress');
         }
     };

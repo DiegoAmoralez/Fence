@@ -70,23 +70,11 @@ const AppRoutes = () => {
         <Route path="incidents" element={<Incidents />} />
         <Route path="reminders" element={<Reminders />} />
         <Route path="notifications" element={<Notifications />} />
-
-        {/* Debug/Reset */}
-        <Route path="/reset" element={<ResetState />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
-};
-
-const ResetState = () => {
-  React.useEffect(() => {
-    localStorage.clear();
-    console.log('App state reset. Reloading...');
-    window.location.href = '/';
-  }, []);
-  return <div className="p-8 text-center text-red-600 font-bold">Resetting App State...</div>;
 };
 
 function App() {

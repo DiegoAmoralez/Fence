@@ -89,11 +89,7 @@ class MockService {
 
     async logout() {
         this.currentUser = null;
-        // User requested partial reset or MVP reset on logout?
-        // "при разлогине добавь сброс mvp до изначального состояния где ничего не пройдено и все заказы опять как новые"
-        // Yes, reset everything.
         this.initData();
-        return true;
     }
 
     // --- Jobs ---
@@ -128,22 +124,21 @@ class MockService {
         const job = this.storage.jobs.find(j => j.id === jobId);
         if (job) {
             job.status = status;
-            // Ensure history exists
+
             if (!job.history) job.history = [];
 
             job.history.push({
-                status: status || 'unknown', // Fallback
+                status: status || 'unknown',
                 details: details || '',
                 timestamp: new Date()
             });
         }
-        return job ? { ...job } : null; // Return copy to force React update
+        return job ? { ...job } : null;
     }
 
     // --- Day Management ---
     async endDay() {
         this.currentUser = null;
-        // User requested to reset all tasks on end day for MVP
         this.initData();
         return true;
     }
