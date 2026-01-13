@@ -89,6 +89,11 @@ class MockService {
 
     async logout() {
         this.currentUser = null;
+        // User requested partial reset or MVP reset on logout?
+        // "при разлогине добавь сброс mvp до изначального состояния где ничего не пройдено и все заказы опять как новые"
+        // Yes, reset everything.
+        this.initData();
+        return true;
     }
 
     // --- Jobs ---

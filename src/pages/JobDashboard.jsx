@@ -22,23 +22,14 @@ const JobDashboard = () => {
 
     useEffect(() => {
         const loadJob = async () => {
-            // Always fetch latest to ensure sync, even if we have context (context might be stale from other tab/nav)
-            // But for now, if we have currentJob and it matches ID, trust it?
-            // Better: If we have currentJob, use it, but maybe background refresh?
-            // Users issue: "White Screen".
-            // The replace above fixes the spread crash.
-            // Let's also ensure setStatus handles missing status gracefully.
-            if (!currentJob || currentJob.id !== jobId) {
-                const job = await mockService.getJob(jobId);
-                setCurrentJob(job);
-                if (job) setStatus(job.status || 'in-progress');
-            } else {
-                setStatus(currentJob.status || 'in-progress');
-            }
+            // Always fetch latest from service to ensure we aren't showing stale context data
+            const job = await mockService.getJob(jobId);
+            setCurrentJob(job);
+            if (job) setStatus(job.status || 'in-progress');
             setTimeout(() => setLoading(false), 600);
         };
         loadJob();
-    }, [jobId, currentJob, setCurrentJob]);
+    }, [jobId, setCurrentJob]);
 
     const handleOpenModal = (type) => {
         setModalOpen(type);
@@ -81,7 +72,6 @@ const JobDashboard = () => {
             }
         } catch (error) {
             console.error("Resume failed:", error);
-            // Fallback
             setStatus('in-progress');
         }
     };
@@ -200,7 +190,7 @@ const JobDashboard = () => {
                 )}
 
                 {/* On Hold Banner */}
-                {status !== 'in-progress' && status !== 'completed' && (
+                {(status === 'hold-equip' || status === 'hold-help') && (
                     <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-start animate-in slide-in-from-top duration-300">
                         <PauseCircle className="text-orange-500 shrink-0 mr-3" />
                         <div>

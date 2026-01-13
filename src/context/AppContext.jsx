@@ -38,7 +38,12 @@ export const AppProvider = ({ children }) => {
         setIsAuthenticated(false);
         localStorage.removeItem('user');
         localStorage.removeItem('truckNumber');
+        // Critical: Clear currentJob so we don't carry over stale job state (like 'on-hold')
+        // to the next session where the backend has already reset to 'scheduled'.
+        setCurrentJob(null);
         setTruckNumber(null);
+        // Force hard reload to guarantee fresh MVP state
+        window.location.href = '/';
     };
 
     const setDailyTruckNumber = async (number) => {
@@ -48,10 +53,12 @@ export const AppProvider = ({ children }) => {
     };
 
     const endDay = async () => {
-        // await mockService.endDay() // If needed
+        await mockService.endDay();
         setTruckNumber(null);
         setCurrentJob(null);
         localStorage.removeItem('truckNumber');
+        // Force hard reload to guarantee fresh MVP state (resets MockService)
+        window.location.href = '/';
     };
 
     const toggleOffline = () => {
