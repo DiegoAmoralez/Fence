@@ -107,6 +107,14 @@ const Login = () => {
                 <button className="block w-full text-sm text-gray-500 hover:text-gray-800" onClick={() => navigate('/public/incidents')}>
                     Report an Incident (Unauthenticated)
                 </button>
+                <a
+                    href="https://secure2.entertimeonline.com/ta/AFC.login"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-sm text-gray-400 hover:text-blue-500 transition-colors"
+                >
+                    TimeKeeping system
+                </a>
             </div>
         </div>
     );

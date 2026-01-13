@@ -41,6 +41,26 @@ class MockService {
         // Generate some meaningful mock data
         this.storage.jobs = [
             {
+                id: 'OMARC25-0061-00',
+                customerName: 'Sample Residential Build',
+                address: '456 Oak Ln, Omaha, NE',
+                phone: '555-0100',
+                status: 'scheduled',
+                notes: 'Residential build project. Watch out for the dog.',
+                lat: 41.2565,
+                lng: -95.9345,
+                preJsa: null,
+                postJsa: null,
+                asBuilt: null,
+                truckNumber: 'T-123',
+                type: 'Residential Build',
+                bayInfo: {
+                    totalBays: 15,
+                    fullBays: 12,
+                    shortBays: 3
+                }
+            },
+            {
                 id: 'JOB-001',
                 customerName: 'John Doe',
                 address: '123 Maple Dr, Springfield, IL',
