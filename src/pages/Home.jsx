@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext';
 
 const Home = () => {
     const navigate = useNavigate();
-    const { user, truckNumber } = useApp();
+    const { user, truckNumber, endDay } = useApp();
 
     const menuItems = [
         {
@@ -90,6 +90,21 @@ const Home = () => {
                     <AlertTriangle size={20} className="shrink-0 mt-0.5" />
                     <p>You must complete the Vehicle Walk Around before accessing your daily schedule.</p>
                 </div>
+            )}
+
+            {/* End Day Action */}
+            {truckNumber && (
+                <button
+                    className="w-full py-4 bg-white border border-red-100 text-red-600 rounded-xl font-bold shadow-sm hover:bg-red-50 flex items-center justify-center mt-4 transition-colors"
+                    onClick={async () => {
+                        if (window.confirm("Are you sure you want to end your working day? You'll need to restart the day.")) {
+                            await endDay();
+                            navigate('/');
+                        }
+                    }}
+                >
+                    End Working Day
+                </button>
             )}
         </div>
     );

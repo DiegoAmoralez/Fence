@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import DailySchedule from './pages/DailySchedule';
 import PreJSA from './pages/PreJSA';
+import JobDashboard from './pages/JobDashboard';
 import PostJSA from './pages/PostJSA';
 import AsBuilt from './pages/AsBuilt';
 import VehicleWalkAround from './pages/VehicleWalkAround';
@@ -62,17 +63,30 @@ const AppRoutes = () => {
 
         {/* Job Workflow */}
         <Route path="job/:jobId/pre-jsa" element={<PreJSA />} />
+        <Route path="job/:jobId/dashboard" element={<JobDashboard />} />
         <Route path="job/:jobId/post-jsa" element={<PostJSA />} />
         <Route path="job/:jobId/as-built" element={<AsBuilt />} />
 
         <Route path="incidents" element={<Incidents />} />
         <Route path="reminders" element={<Reminders />} />
         <Route path="notifications" element={<Notifications />} />
+
+        {/* Debug/Reset */}
+        <Route path="/reset" element={<ResetState />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
+};
+
+const ResetState = () => {
+  React.useEffect(() => {
+    localStorage.clear();
+    console.log('App state reset. Reloading...');
+    window.location.href = '/';
+  }, []);
+  return <div className="p-8 text-center text-red-600 font-bold">Resetting App State...</div>;
 };
 
 function App() {

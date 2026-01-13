@@ -105,8 +105,42 @@ class MockService {
 
     async startJob(jobId) {
         const job = this.storage.jobs.find(j => j.id === jobId);
-        if (job) job.status = 'in-progress';
+        if (job) {
+            job.status = 'in-progress';
+            if (!job.history) job.history = [];
+            job.history.push({
+                status: 'started',
+                details: 'Job started by foreman',
+                timestamp: new Date()
+            });
+        }
         return job;
+    }
+
+    async updateJobStatus(jobId, status, details) {
+        // Simulate API
+        await new Promise(r => setTimeout(r, 500));
+        const job = this.storage.jobs.find(j => j.id === jobId);
+        if (job) {
+            job.status = status;
+            // Ensure history exists
+            if (!job.history) job.history = [];
+
+            job.history.push({
+                status: status || 'unknown', // Fallback
+                details: details || '',
+                timestamp: new Date()
+            });
+        }
+        return job ? { ...job } : null; // Return copy to force React update
+    }
+
+    // --- Day Management ---
+    async endDay() {
+        this.currentUser = null;
+        // User requested to reset all tasks on end day for MVP
+        this.initData();
+        return true;
     }
 
     async savePreJSA(jobId, data) {
@@ -122,13 +156,27 @@ class MockService {
         const job = this.storage.jobs.find(j => j.id === jobId);
         if (job) {
             job.preJsa = { ...data, submittedAt: new Date() };
+            if (!job.history) job.history = [];
+            job.history.push({
+                status: 'safety-check',
+                details: 'Pre-Job Safety Analysis completed',
+                timestamp: new Date()
+            });
         }
         return true;
     }
 
     async completeJob(jobId) {
         const job = this.storage.jobs.find(j => j.id === jobId);
-        if (job) job.status = 'completed';
+        if (job) {
+            job.status = 'completed';
+            if (!job.history) job.history = [];
+            job.history.push({
+                status: 'completed',
+                details: 'Job marked as complete',
+                timestamp: new Date()
+            });
+        }
         return job;
     }
 

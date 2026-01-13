@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 const MobileLayout = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const { user, logout, isOffline, toggleOffline } = useApp();
+    const { user, logout, isOffline, toggleOffline, currentJob } = useApp();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -55,6 +55,34 @@ const MobileLayout = () => {
             {isOffline && (
                 <div className="bg-yellow-100 text-yellow-800 text-xs text-center py-1 font-medium">
                     Offline Mode - Changes will sync when online
+                </div>
+            )}
+
+            {/* Active Job Banner (Persistent) */}
+            {currentJob && currentJob.status === 'in-progress' && (
+                <div
+                    onClick={() => navigate(`/job/${currentJob.id}/dashboard`)}
+                    className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center text-sm shadow-inner cursor-pointer hover:bg-blue-700 transition-colors"
+                >
+                    <div className="flex items-center truncate">
+                        <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse shrink-0"></span>
+                        <span className="font-medium truncate">Active: {currentJob.customerName}</span>
+                    </div>
+                    <span className="text-blue-200 text-xs ml-2 whitespace-nowrap">Tap to view &rarr;</span>
+                </div>
+            )}
+
+            {/* Day Started but No Active Job - "Active Orders" */}
+            {useApp().truckNumber && (!currentJob || currentJob.status !== 'in-progress') && (
+                <div
+                    onClick={() => navigate('/schedule')}
+                    className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center text-sm shadow-inner cursor-pointer hover:bg-blue-700 transition-colors"
+                >
+                    <div className="flex items-center truncate">
+                        <span className="w-2 h-2 bg-blue-300 rounded-full mr-2 shrink-0"></span>
+                        <span className="font-medium truncate">Active Orders</span>
+                    </div>
+                    <span className="text-blue-200 text-xs ml-2 whitespace-nowrap">View Schedule &rarr;</span>
                 </div>
             )}
 

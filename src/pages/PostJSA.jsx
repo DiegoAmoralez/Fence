@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Save, ArrowRight, Loader, CheckCircle } from 'lucide-react';
+import { ArrowRight, Loader, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockService } from '../services/MockService';
 
@@ -103,13 +103,10 @@ const PostJSA = () => {
             </div>
 
             <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex space-x-3 z-20">
-                <button className="flex-1 py-3 border border-gray-300 rounded-xl font-bold text-gray-600 flex items-center justify-center">
-                    <Save size={18} className="mr-2" /> Save
-                </button>
                 <button
                     onClick={handleSubmit}
                     disabled={!isFormValid() || isLoading}
-                    className="flex-[2] py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
+                    className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg"
                 >
                     {isLoading ? <Loader className="animate-spin" /> : <>Continue to As-Built <ArrowRight size={18} className="ml-2" /></>}
                 </button>

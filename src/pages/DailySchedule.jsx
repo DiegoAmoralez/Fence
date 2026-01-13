@@ -22,20 +22,15 @@ const DailySchedule = () => {
         fetchJobs();
     }, []);
 
-    const handleMapIt = (job, e) => {
+    const handleDetails = (job, e) => {
         e.stopPropagation();
         setCurrentJob(job);
-        navigate('/map');
+        navigate(`/job/${job.id}/dashboard`);
     };
 
     const handleJobSelect = (job) => {
-        // According to SOW, clicking job goes to Arrival/Pre-JSA flow
-        // "Job Arrival + PreJSA"
         setCurrentJob(job);
-
-        // If already arrived/started, where do we go?
-        // For simplicity: Always go to PreJSA page, which will decide if it shows "Welcome/Arrival" or form.
-        navigate(`/job/${job.id}/pre-jsa`);
+        navigate(`/job/${job.id}/dashboard`);
     };
 
     if (loading) {
@@ -61,10 +56,14 @@ const DailySchedule = () => {
                             <div className="flex justify-between items-start mb-2">
                                 <h3 className="font-bold text-lg text-gray-900">{job.customerName}</h3>
                                 <span className={`px-2 py-1 rounded-full text-xs font-bold ${job.status === 'completed' ? 'bg-green-100 text-green-700' :
-                                    job.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                                        'bg-gray-100 text-gray-600'
+                                        job.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
+                                            job.status === 'hold-equip' ? 'bg-orange-100 text-orange-700' :
+                                                job.status === 'hold-help' ? 'bg-yellow-100 text-yellow-700' :
+                                                    'bg-gray-100 text-gray-600'
                                     }`}>
-                                    {job.status.toUpperCase()}
+                                    {job.status === 'hold-equip' ? 'WAITING EQUIP' :
+                                        job.status === 'hold-help' ? 'WAITING HELP' :
+                                            job.status.toUpperCase()}
                                 </span>
                                 <ArrowRight size={20} className="text-gray-300 ml-2" />
                             </div>
@@ -84,11 +83,10 @@ const DailySchedule = () => {
                             </div>
 
                             <button
-                                onClick={(e) => handleMapIt(job, e)}
+                                onClick={(e) => handleDetails(job, e)}
                                 className="w-full py-2 bg-blue-50 text-blue-600 font-bold rounded-lg flex items-center justify-center hover:bg-blue-100 transition-colors"
                             >
-                                <Map size={18} className="mr-2" />
-                                Map Destination
+                                See Details <ArrowRight size={18} className="ml-2" />
                             </button>
                         </div>
                     </div>

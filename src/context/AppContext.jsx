@@ -47,6 +47,13 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem('truckNumber', number);
     };
 
+    const endDay = async () => {
+        // await mockService.endDay() // If needed
+        setTruckNumber(null);
+        setCurrentJob(null);
+        localStorage.removeItem('truckNumber');
+    };
+
     const toggleOffline = () => {
         setIsOffline(prev => {
             const newState = !prev;
@@ -68,6 +75,7 @@ export const AppProvider = ({ children }) => {
             setCurrentJob,
             truckNumber,
             setDailyTruckNumber,
+            endDay,
             notifications
         }}>
             {children}
